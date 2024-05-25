@@ -6,6 +6,8 @@ import router from './router';
 // import supabase from './supabase';
 
 import { IonicVue } from '@ionic/vue';
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -28,7 +30,8 @@ import './theme/variables.css';
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
+  .use(router)
+  .use(VueToast);
 
 router.isReady().then(() => {
   app.mount('#app');

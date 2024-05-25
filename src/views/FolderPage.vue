@@ -18,11 +18,10 @@
 
       <div id="container">
         <CatalogoView v-if="$route.params.id === 'Catalogo'" id="CatalogoView" />
-        <ContactView v-if="$route.params.id === 'Contacto'" style="border: solid red 1px;" id="ContactView" />
-        <FavoritesView v-if="$route.params.id === 'Favoritos'" style="border: solid blue 1px;" id="FavoritesView" />
-        <HelpView v-if="$route.params.id === 'Ayuda y Soporte'" style="border: solid yellow 1px;" id="HelpView" />
-        <ReservationsView v-if="$route.params.id === 'Prestamos y Reservas'" style="border: solid pink 1px;"
-          id="ReservationsView" />
+        <ContactView v-if="$route.params.id === 'Contacto'" id="ContactView" />
+        <!-- <FavoritesView v-if="$route.params.id === 'Favoritos'" id="FavoritesView" /> -->
+        <HelpView v-if="$route.params.id === 'Ayuda y Soporte'" id="HelpView" />
+        <ReservationsView v-if="$route.params.id === 'Prestamos y Reservas'" id="ReservationsView" />
       </div>
 
     </ion-content>
@@ -32,7 +31,7 @@
 <script>
 import CatalogoView from './Catalog.vue';
 import ContactView from './Contact.vue';
-import FavoritesView from './Favorites.vue';
+// import FavoritesView from './Favorites.vue';
 import HelpView from './Help.vue';
 import ReservationsView from './Reservations.vue';
 
@@ -41,7 +40,7 @@ export default {
   components: {
     CatalogoView,
     ContactView,
-    FavoritesView,
+    // FavoritesView,
     HelpView,
     ReservationsView
   }
@@ -80,7 +79,29 @@ export default {
     margin-left: 15%;
     margin-right: 15%;
     margin-bottom: 20%;
-    border: solid rgb(251, 255, 0) 1px;
+    /* border: solid rgb(251, 255, 0) 1px; */
+  }
+
+  #ContactView {
+    margin-top: 2px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 20%;
+    /* border: solid rgb(251, 255, 0) 1px; */
+  }
+  #HelpView {
+    margin-top: 2px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 20%;
+    /* border: solid rgb(251, 255, 0) 1px; */
+  }
+  #ReservationsView {
+    margin-top: 2px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 20%;
+    /* border: solid rgb(251, 255, 0) 1px; */
   }
 }
 </style>

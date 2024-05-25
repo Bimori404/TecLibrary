@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>Bienvenido al catálogo de la biblioteca.</p>
-        <button @click="showModal = true">Agregar Libro</button>
+        <button @click="showModal = true" style="background: green; opacity: .8;">Agregar Libro</button>
         <div v-if="loading">Cargando libros...</div>
         <div v-else-if="catalogItems.length === 0">No hay libros en el catálogo.</div>
         <div class="cards-container" v-else>
@@ -9,8 +9,17 @@
                 <img :src="item.image" :alt="item.title">
                 <h2>{{ item.title }}</h2>
                 <p>{{ item.description }}</p>
-                <button @click="removeItem(item.id)">Eliminar</button>
-                <button @click="editItem(item)">Actualizar</button>
+                <button @click="removeItem(item.id)">
+                    <ion-icon :icon="trash"></ion-icon>
+                </button>
+                |
+                <button @click="editItem(item)" style="background: green; opacity: .8;">
+                    <ion-icon :icon="create"></ion-icon>
+                </button>
+                |
+                <button @click="reserveItem(item)" style="background: blue; opacity: .8;">
+                    <ion-icon :icon="bookmark"></ion-icon>
+                </button>
             </div>
         </div>
         <AddModalCatalog :isVisible="showModal" @close="showModal = false" @add-item="addNewItem"></AddModalCatalog>
@@ -23,6 +32,8 @@
 import supabase from '../supabase';
 import AddModalCatalog from './modal/AddCatalog.vue';
 import EditModalCatalog from './modal/EditCatalog.vue';
+import { create, trash, bookmark } from 'ionicons/icons';
+import { useToast } from 'vue-toast-notification';
 
 export default {
     name: 'CatalogoView',
@@ -36,7 +47,11 @@ export default {
             showModal: false,
             showEditModal: false,
             selectedItem: null,
-            loading: true
+            loading: true,
+            iconName: null,
+            trash,
+            create,
+            bookmark
         };
     },
     async created() {
@@ -101,11 +116,25 @@ export default {
                 }
             }
             this.showEditModal = false;
+        },
+        reserveItem(item) {
+            const $toast = useToast();
+            let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+            if (!reservations.some(reservation => reservation.id === item.id)) {
+                reservations.push(item);
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+                $toast.success('Libro reservado exitosamente', {
+                    position: 'bottom'
+                });
+            } else {
+                $toast.warning('Este libro ya está reservado', {
+                    position: 'bottom'
+                });
+            }
         }
     }
 };
 </script>
-
 
 <style>
 .cards-container {

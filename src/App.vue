@@ -129,8 +129,7 @@ import { useRoute, useRouter } from 'vue-router';
 import {
   book,
   receipt,
-  heartOutline,
-  heartSharp,
+  // trash,
   helpCircle,
   people,
 } from 'ionicons/icons';
@@ -149,12 +148,12 @@ const appPages = [
     iosIcon: receipt,
     mdIcon: receipt,
   },
-  {
-    title: 'Favoritos',
-    url: '/folder/Favoritos',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp,
-  },
+  // {
+  //   title: 'Favoritos',
+  //   url: '/folder/Favoritos',
+  //   iosIcon: trash,
+  //   mdIcon: trash,
+  // },
   {
     title: 'Ayuda y Soporte',
     url: '/folder/Ayuda y Soporte',
