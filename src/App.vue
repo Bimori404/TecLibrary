@@ -1,36 +1,115 @@
 <template>
   <ion-app>
     <ion-split-pane content-id="main-content">
-      <ion-menu content-id="main-content" type="overlay">
-        <ion-content>
-          <ion-list id="inbox-list">
-            <ion-list-header>Inbox</ion-list-header>
-            <ion-note>hi@ionicframework.com</ion-note>
 
+      <ion-menu content-id="main-content" type="overlay">
+
+        <ion-content>
+          <!--  -->
+          <!-- <ion-list id="inbox-list"> -->
+          <ion-list id="inbox-list">
+            <ion-list-header>TecLibrary</ion-list-header>
+            <ion-note>by MankosTeam</ion-note>
+          </ion-list>
+          <!--  -->
+          <ion-list>
             <ion-menu-toggle :auto-hide="false" v-for="(p, i) in appPages" :key="i">
-              <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" :detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
+              <ion-item @click="navigateToPage(p.url, i)" router-direction="root" lines="none" :detail="false"
+                class="hydrated" :class="{ selected: selectedIndex === i }">
                 <ion-icon aria-hidden="true" slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
-          </ion-list>
 
-          <ion-list id="labels-list">
-            <ion-list-header>Labels</ion-list-header>
-
-            <ion-item v-for="(label, index) in labels" lines="none" :key="index">
-              <ion-icon aria-hidden="true" slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
-              <ion-label>{{ label }}</ion-label>
-            </ion-item>
           </ion-list>
+          <!--  -->
         </ion-content>
+
       </ion-menu>
+
       <ion-router-outlet id="main-content"></ion-router-outlet>
+
     </ion-split-pane>
   </ion-app>
 </template>
+<!--
+<script setup>
+import {
+IonApp,
+IonContent,
+IonIcon,
+IonItem,
+IonLabel,
+IonList,
+IonListHeader,
+IonMenu,
+IonMenuToggle,
+IonNote,
+IonRouterOutlet,
+IonSplitPane,
+} from '@ionic/vue';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import {
+book,
+receipt,
+heartOutline,
+heartSharp,
+helpCircle,
+people,
+} from 'ionicons/icons';
 
-<script setup lang="ts">
+const selectedIndex = ref(0);
+const appPages = [
+{
+  title: 'Catálogo',
+  url: '/folder/Catalogo',
+  iosIcon: book,
+  mdIcon: book,
+},
+{
+  title: 'Préstamos y Reservas',
+  url: '/folder/Prestamos y Reservas',
+  iosIcon: receipt,
+  mdIcon: receipt,
+},
+{
+  title: 'Favoritos',
+  url: '/folder/Favoritos',
+  iosIcon: heartOutline,
+  mdIcon: heartSharp,
+},
+{
+  title: 'Ayuda y Soporte',
+  url: '/folder/Ayuda y Soporte',
+  iosIcon: helpCircle,
+  mdIcon: helpCircle,
+},
+{
+  title: 'Contacto',
+  url: '/folder/Contacto',
+  iosIcon: people,
+  mdIcon: people,
+},
+];
+
+const route = useRoute();
+const router = useRouter();
+const currentId = ref(route.params.id);
+
+watch(() => route.params.id, (newId) => {
+currentId.value = newId;
+selectedIndex.value = appPages.findIndex((page) => page.url.includes(newId));
+});
+
+const navigateToPage = (url, index) => {
+selectedIndex.value = index;
+router.push(url);
+};
+</script>
+-->
+
+<script setup>
 import {
   IonApp,
   IonContent,
@@ -45,69 +124,67 @@ import {
   IonRouterOutlet,
   IonSplitPane,
 } from '@ionic/vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import {
-  archiveOutline,
-  archiveSharp,
-  bookmarkOutline,
-  bookmarkSharp,
+  book,
+  receipt,
   heartOutline,
   heartSharp,
-  mailOutline,
-  mailSharp,
-  paperPlaneOutline,
-  paperPlaneSharp,
-  trashOutline,
-  trashSharp,
-  warningOutline,
-  warningSharp,
+  helpCircle,
+  people,
 } from 'ionicons/icons';
 
 const selectedIndex = ref(0);
 const appPages = [
   {
-    title: 'Inbox',
-    url: '/folder/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp,
+    title: 'Catálogo',
+    url: '/folder/Catalogo',
+    iosIcon: book,
+    mdIcon: book,
   },
   {
-    title: 'Outbox',
-    url: '/folder/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp,
+    title: 'Préstamos y Reservas',
+    url: '/folder/Prestamos y Reservas',
+    iosIcon: receipt,
+    mdIcon: receipt,
   },
   {
-    title: 'Favorites',
-    url: '/folder/Favorites',
+    title: 'Favoritos',
+    url: '/folder/Favoritos',
     iosIcon: heartOutline,
     mdIcon: heartSharp,
   },
   {
-    title: 'Archived',
-    url: '/folder/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp,
+    title: 'Ayuda y Soporte',
+    url: '/folder/Ayuda y Soporte',
+    iosIcon: helpCircle,
+    mdIcon: helpCircle,
   },
   {
-    title: 'Trash',
-    url: '/folder/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp,
-  },
-  {
-    title: 'Spam',
-    url: '/folder/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp,
+    title: 'Contacto',
+    url: '/folder/Contacto',
+    iosIcon: people,
+    mdIcon: people,
   },
 ];
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-const path = window.location.pathname.split('folder/')[1];
-if (path !== undefined) {
-  selectedIndex.value = appPages.findIndex((page) => page.title.toLowerCase() === path.toLowerCase());
-}
+const route = useRoute();
+const router = useRouter();
+const currentId = ref(route.params.id);
+
+watch(() => route.params.id, (newId) => {
+  currentId.value = newId;
+  selectedIndex.value = appPages.findIndex((page) => page.url.includes(newId));
+});
+
+const navigateToPage = (url, index) => {
+  selectedIndex.value = index;
+  router.push(url).then(() => {
+    // Recargar la página después de navegar a la nueva ruta
+    window.location.reload();
+  });
+};
 </script>
 
 <style scoped>
@@ -127,7 +204,7 @@ ion-menu.md ion-list {
 }
 
 ion-menu.md ion-note {
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 ion-menu.md ion-list-header,
@@ -163,19 +240,21 @@ ion-menu.md ion-item {
 }
 
 ion-menu.md ion-item.selected {
-  --background: rgba(var(--ion-color-primary-rgb), 0.14);
+  /* --background: rgba(var(--ion-color-primary-rgb), 0.14); */
 }
 
 ion-menu.md ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
+  /* color: var(--ion-color-primary); */
 }
 
 ion-menu.md ion-item ion-icon {
-  color: #616e7e;
+  /* color: #616e7e; */
+  color: var(--ion-color-primary);
 }
 
 ion-menu.md ion-item ion-label {
   font-weight: 500;
+  /* border: solid red 1px; */
 }
 
 ion-menu.ios ion-content {
@@ -198,7 +277,7 @@ ion-menu.ios ion-item {
 }
 
 ion-menu.ios ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
+  /* color: var(--ion-color-primary); */
 }
 
 ion-menu.ios ion-item ion-icon {
@@ -228,6 +307,6 @@ ion-note {
 }
 
 ion-item.selected {
-  --color: var(--ion-color-primary);
+  /* --color: var(--ion-color-primary); */
 }
 </style>

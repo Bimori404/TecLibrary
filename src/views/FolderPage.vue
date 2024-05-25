@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page style="background: #fff;">
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons slot="start">
@@ -17,25 +17,45 @@
       </ion-header>
 
       <div id="container">
-        <strong class="capitalize">{{ $route.params.id }}</strong>
-        <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <CatalogoView v-if="$route.params.id === 'Catalogo'" id="CatalogoView" />
+        <ContactView v-if="$route.params.id === 'Contacto'" style="border: solid red 1px;" id="ContactView" />
+        <FavoritesView v-if="$route.params.id === 'Favoritos'" style="border: solid blue 1px;" id="FavoritesView" />
+        <HelpView v-if="$route.params.id === 'Ayuda y Soporte'" style="border: solid yellow 1px;" id="HelpView" />
+        <ReservationsView v-if="$route.params.id === 'Prestamos y Reservas'" style="border: solid pink 1px;"
+          id="ReservationsView" />
       </div>
+
     </ion-content>
   </ion-page>
 </template>
 
-<script setup lang="ts">
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+<script>
+import CatalogoView from './Catalog.vue';
+import ContactView from './Contact.vue';
+import FavoritesView from './Favorites.vue';
+import HelpView from './Help.vue';
+import ReservationsView from './Reservations.vue';
+
+export default {
+  name: 'FolderPage',
+  components: {
+    CatalogoView,
+    ContactView,
+    FavoritesView,
+    HelpView,
+    ReservationsView
+  }
+};
 </script>
 
 <style scoped>
 #container {
   text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  /* Ajusta este valor según tus necesidades */
 }
 
 #container strong {
@@ -52,5 +72,15 @@ import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, Io
 
 #container a {
   text-decoration: none;
+}
+
+@media screen and (min-width: 393px) {
+  #CatalogoView {
+    margin-top: 5px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 20%;
+    border: solid rgb(251, 255, 0) 1px;
+  }
 }
 </style>
