@@ -131,7 +131,7 @@ import {
   receipt,
   // trash,
   helpCircle,
-  people,
+  // people,
 } from 'ionicons/icons';
 
 const selectedIndex = ref(0);
@@ -160,12 +160,12 @@ const appPages = [
     iosIcon: helpCircle,
     mdIcon: helpCircle,
   },
-  {
-    title: 'Contacto',
-    url: '/folder/Contacto',
-    iosIcon: people,
-    mdIcon: people,
-  },
+  // {
+  //   title: 'Contacto',
+  //   url: '/folder/Contacto',
+  //   iosIcon: people,
+  //   mdIcon: people,
+  // },
 ];
 
 const route = useRoute();

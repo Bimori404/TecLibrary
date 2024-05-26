@@ -12,6 +12,10 @@
                     <label for="description">Descripción:</label>
                     <textarea id="description" v-model="description" required></textarea>
                 </div>
+                <div>
+                    <label for="image">Imagen de portada:</label>
+                    <input type="file" @change="onFileChange">
+                </div>
                 <button type="submit">Actualizar</button>
             </form>
         </div>
@@ -19,6 +23,7 @@
 </template>
 
 <script>
+import supabase from '../../supabase';
 import { useToast } from 'vue-toast-notification';
 
 export default {
@@ -31,13 +36,14 @@ export default {
         item: {
             type: Object,
             required: false,
-            default: () => ({ title: '', description: '' })
+            default: () => ({ title: '', description: '', image: '' })
         }
     },
     data() {
         return {
             title: this.item ? this.item.title : '',
-            description: this.item ? this.item.description : ''
+            description: this.item ? this.item.description : '',
+            imageFile: null
         };
     },
     watch: {
@@ -56,17 +62,46 @@ export default {
         close() {
             this.$emit('close');
         },
-        submitForm() {
+        onFileChange(e) {
+            this.imageFile = e.target.files[0];
+        },
+        async submitForm() {
             const $toast = useToast();
-            const updatedItem = {
-                ...this.item,
-                title: this.title,
-                description: this.description
-            };
-            this.$emit('update-item', updatedItem);
-            $toast.success('Libro actualizado exitosamente', {
-                position: 'bottom'
-            });
+
+            try {
+                // Subir imagen
+                let imageUrl = this.item.image; // Mantener la imagen actual si no se cambia
+                if (this.imageFile) {
+                    const formData = new FormData();
+                    formData.append('file', this.imageFile);
+
+                    const { data, error } = await supabase
+                        .storage
+                        .from('imagenes')
+                        .upload(`portadas/${this.imageFile.name}`, this.imageFile); // Ajustar la clave
+
+                    if (error) throw error;
+
+                    imageUrl = `${supabase.storage.from('imagenes').getPublicUrl(data.Key)}`;
+                }
+
+                const updatedItem = {
+                    ...this.item,
+                    title: this.title,
+                    description: this.description,
+                    image: imageUrl
+                };
+
+                this.$emit('update-item', updatedItem);
+                $toast.success('Libro actualizado exitosamente', {
+                    position: 'bottom'
+                });
+            } catch (error) {
+                console.error('Error updating book:', error);
+                $toast.error('Error al actualizar el libro', {
+                    position: 'bottom'
+                });
+            }
         }
     }
 };

@@ -32,7 +32,7 @@
 import supabase from '../supabase';
 import AddModalCatalog from './modal/AddCatalog.vue';
 import EditModalCatalog from './modal/EditCatalog.vue';
-import { create, trash, bookmark } from 'ionicons/icons';
+import { create, trash, bookmark, image } from 'ionicons/icons';
 import { useToast } from 'vue-toast-notification';
 
 export default {
@@ -59,26 +59,52 @@ export default {
     },
     methods: {
         async fetchBooks() {
-            const { data: books, error } = await supabase
-                .from('libros')
-                .select('*');
-            if (error) {
-                console.error('Error fetching books:', error);
-            } else {
-                this.catalogItems = books.map(book => ({
-                    id: book.id_libro,
-                    title: book.titulo,
-                    description: book.descripcion,
-                    image: 'https://via.placeholder.com/150' // URL de imagen por defecto
-                }));
+            try {
+                const { data: books, error: booksError } = await supabase
+                    .from('libros')
+                    .select('*');
+
+                if (booksError) {
+                    throw new Error('Error fetching books:', booksError);
+                }
+
+                const { data: images, error: imagesError } = await supabase
+                    .from('imagenes')
+                    .select('*');
+                //.select('datos', { 'id_libro': 'libro_id' }); // Renombramos 'id_libro' a 'libro_id' para que coincida con el nombre en la tabla libros
+
+                console.log(books);
+                console.log(images);
+
+                if (imagesError) {
+                    throw new Error('Error fetching images:', imagesError);
+                }
+
+                const booksWithImages = books.map(book => {
+                    const image = images.find(image => image.libro_id === book.id_libro);
+                    return {
+                        id: book.id_libro,
+                        title: book.titulo,
+                        description: book.descripcion,
+                        image: image ? image.url : 'https://via.placeholder.com/150'
+                    };
+                });
+
+                console.log(booksWithImages);
+
+                this.catalogItems = booksWithImages;
+                this.loading = false;
+            } catch (error) {
+                console.error(error);
             }
-            this.loading = false;
-        },
+        }
+        ,
         async addNewItem(newItem) {
             const { data, error } = await supabase
                 .from('libros')
                 .insert([{ titulo: newItem.title, descripcion: newItem.description }])
                 .select();
+
             if (error) {
                 console.error('Error adding book:', error);
             } else {

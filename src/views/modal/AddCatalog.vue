@@ -12,6 +12,10 @@
                     <label for="description">Descripción:</label>
                     <textarea id="description" v-model="description" required></textarea>
                 </div>
+                <div>
+                    <label for="image">Imagen de portada:</label>
+                    <input type="file" @change="onFileChange" required>
+                </div>
                 <button type="submit">Agregar</button>
             </form>
         </div>
@@ -19,8 +23,8 @@
 </template>
 
 <script>
+import supabase from '../../supabase';
 import { useToast } from 'vue-toast-notification';
-
 
 export default {
     name: 'AddModalCatalog',
@@ -33,27 +37,58 @@ export default {
     data() {
         return {
             title: '',
-            description: ''
+            description: '',
+            imageFile: null
         };
     },
     methods: {
         close() {
             this.$emit('close');
         },
-        submitForm() {
+        onFileChange(e) {
+            this.imageFile = e.target.files[0];
+        },
+        async submitForm() {
             const $toast = useToast();
-            const newItem = {
-                title: this.title,
-                description: this.description,
-                image: 'https://via.placeholder.com/150'  // URL de imagen por defecto
-            };
-            this.$emit('add-item', newItem);
-            this.title = '';
-            this.description = '';
-            this.close();
-            $toast.success('Libro agregado exitosamente', {
-                position: 'bottom'
-            });
+
+            try {
+                // Subir imagen
+                let imageUrl = 'https://via.placeholder.com/150';
+                if (this.imageFile) {
+                    const formData = new FormData();
+                    formData.append('file', this.imageFile);
+
+                    // Suponiendo que se sube la imagen a un endpoint de Supabase
+                    const { data, error } = await supabase
+                        .storage
+                        .from('imagenes')
+                        .upload(`portadas/${this.imageFile.name}`, this.imageFile);
+
+                    if (error) throw error;
+
+                    imageUrl = `${supabase.storage.from('imagenes').getPublicUrl(data.Key)}`;
+                }
+
+                const newItem = {
+                    title: this.title,
+                    description: this.description,
+                    image: imageUrl
+                };
+
+                this.$emit('add-item', newItem);
+                this.title = '';
+                this.description = '';
+                this.imageFile = null;
+                this.close();
+                $toast.success('Libro agregado exitosamente', {
+                    position: 'bottom'
+                });
+            } catch (error) {
+                console.error('Error adding book:', error);
+                $toast.error('Error al agregar el libro', {
+                    position: 'bottom'
+                });
+            }
         }
     }
 };
