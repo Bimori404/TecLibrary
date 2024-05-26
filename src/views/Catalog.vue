@@ -32,7 +32,12 @@
 import supabase from '../supabase';
 import AddModalCatalog from './modal/AddCatalog.vue';
 import EditModalCatalog from './modal/EditCatalog.vue';
-import { create, trash, bookmark, image } from 'ionicons/icons';
+import { 
+    create, 
+    trash, 
+    bookmark, 
+    //image 
+} from 'ionicons/icons';
 import { useToast } from 'vue-toast-notification';
 
 export default {
