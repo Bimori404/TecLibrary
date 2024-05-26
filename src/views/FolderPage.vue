@@ -18,7 +18,7 @@
 
       <div id="container">
         <CatalogoView v-if="$route.params.id === 'Catalogo'" id="CatalogoView" />
-        <ContactView v-if="$route.params.id === 'Contacto'" id="ContactView" />
+        <!-- <ContactView v-if="$route.params.id === 'Contacto'" id="ContactView" /> -->
         <!-- <FavoritesView v-if="$route.params.id === 'Favoritos'" id="FavoritesView" /> -->
         <HelpView v-if="$route.params.id === 'Ayuda y Soporte'" id="HelpView" />
         <ReservationsView v-if="$route.params.id === 'Prestamos y Reservas'" id="ReservationsView" />
@@ -30,7 +30,7 @@
 
 <script>
 import CatalogoView from './Catalog.vue';
-import ContactView from './Contact.vue';
+// import ContactView from './Contact.vue';
 // import FavoritesView from './Favorites.vue';
 import HelpView from './Help.vue';
 import ReservationsView from './Reservations.vue';
@@ -39,7 +39,7 @@ export default {
   name: 'FolderPage',
   components: {
     CatalogoView,
-    ContactView,
+    // ContactView,
     // FavoritesView,
     HelpView,
     ReservationsView

@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toast-notification';
+
 export default {
     name: 'EditModalCatalog',
     props: {
@@ -55,12 +57,16 @@ export default {
             this.$emit('close');
         },
         submitForm() {
+            const $toast = useToast();
             const updatedItem = {
                 ...this.item,
                 title: this.title,
                 description: this.description
             };
             this.$emit('update-item', updatedItem);
+            $toast.success('Libro actualizado exitosamente', {
+                position: 'bottom'
+            });
         }
     }
 };

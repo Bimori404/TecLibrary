@@ -88,6 +88,7 @@ export default {
             this.showModal = false;
         },
         async removeItem(id) {
+            const $toast = useToast();
             const { error } = await supabase
                 .from('libros')
                 .delete()
@@ -96,6 +97,9 @@ export default {
                 console.error('Error removing book:', error);
             } else {
                 this.catalogItems = this.catalogItems.filter(item => item.id !== id);
+                $toast.success('Libro removido exitosamente', {
+                    position: 'bottom'
+                });
             }
         },
         editItem(item) {

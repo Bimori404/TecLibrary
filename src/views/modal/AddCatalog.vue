@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toast-notification';
+
+
 export default {
     name: 'AddModalCatalog',
     props: {
@@ -38,6 +41,7 @@ export default {
             this.$emit('close');
         },
         submitForm() {
+            const $toast = useToast();
             const newItem = {
                 title: this.title,
                 description: this.description,
@@ -47,6 +51,9 @@ export default {
             this.title = '';
             this.description = '';
             this.close();
+            $toast.success('Libro agregado exitosamente', {
+                position: 'bottom'
+            });
         }
     }
 };

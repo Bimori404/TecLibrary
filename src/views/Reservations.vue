@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toast-notification';
+
 export default {
     name: 'ReservationsView',
     data() {
@@ -30,8 +32,12 @@ export default {
             this.reservedItems = JSON.parse(localStorage.getItem('reservations')) || [];
         },
         removeReservation(id) {
+            const $toast = useToast();
             this.reservedItems = this.reservedItems.filter(item => item.id !== id);
             localStorage.setItem('reservations', JSON.stringify(this.reservedItems));
+            $toast.success('Libro removido exitosamente', {
+                position: 'bottom'
+            });
         }
     }
 };
