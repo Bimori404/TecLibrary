@@ -78,8 +78,8 @@ export default {
                     .select('*');
                 //.select('datos', { 'id_libro': 'libro_id' }); // 'id_libro' a 'libro_id' para que coincida con la tabla libros
 
-                console.log(books);
-                console.log(images);
+                // console.log(books);
+                // console.log(images);
 
                 if (imagesError) {
                     throw new Error('Error fetching images:', imagesError);
@@ -95,7 +95,7 @@ export default {
                     };
                 });
 
-                console.log(booksWithImages);
+                // console.log(booksWithImages);
 
                 this.catalogItems = booksWithImages;
                 this.loading = false;

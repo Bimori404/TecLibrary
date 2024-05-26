@@ -12,10 +12,12 @@
                     <label for="description">Descripción:</label>
                     <textarea id="description" v-model="description" required></textarea>
                 </div>
+                <br>
                 <div>
                     <label for="image">Imagen de portada:</label>
                     <input type="file" @change="onFileChange" required>
                 </div>
+                <br>
                 <button type="submit">Agregar</button>
             </form>
         </div>
@@ -58,7 +60,6 @@ export default {
                     const formData = new FormData();
                     formData.append('file', this.imageFile);
 
-                    // Suponiendo que se sube la imagen a un endpoint de Supabase
                     const { data, error } = await supabase
                         .storage
                         .from('imagenes')
