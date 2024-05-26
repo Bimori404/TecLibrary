@@ -76,7 +76,7 @@ export default {
                 const { data: images, error: imagesError } = await supabase
                     .from('imagenes')
                     .select('*');
-                //.select('datos', { 'id_libro': 'libro_id' }); // Renombramos 'id_libro' a 'libro_id' para que coincida con el nombre en la tabla libros
+                //.select('datos', { 'id_libro': 'libro_id' }); // 'id_libro' a 'libro_id' para que coincida con la tabla libros
 
                 console.log(books);
                 console.log(images);
